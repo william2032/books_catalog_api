@@ -1,0 +1,30 @@
+###Get all books
+GET http://localhost:3000/books
+
+###Get one book by ID
+GET http://localhost:3000/books/1
+
+###Create a book using POST
+POST http://localhost:3000/books
+Content-Type: application/json
+
+{
+  "title": "Atomic Habits",
+  "author": "James Clear",
+  "isbn": "784677878774774",
+  "publication_year": 2020
+}
+
+###Update a book using PUT
+PUT http://localhost:3000/books/2
+Content-Type: application/json
+
+{
+  "title": "Computer Science"
+}
+
+###Delete a book
+DELETE http://localhost:3000/books/2
+
+### count books by year
+GET http://localhost:3000/books/count/1848

@@ -31,12 +31,12 @@ export class BooksService {
         [id],
       );
       if (result.rows.length == 0) {
-        throw new NotFoundException('Book with ID ${id} not found');
+        throw new NotFoundException(`Book with ID ${id} not found`);
       }
       return result.rows[0];
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException('ailed to fetch book');
+      throw new InternalServerErrorException('Failed to fetch book');
     }
   }
 
@@ -61,7 +61,7 @@ export class BooksService {
   // Update a book
   async update(id: number, updateBookDto: UpdateBookDto): Promise<Book> {
     try {
-      const existingBook = await this.findOne(id);
+      await this.findOne(id);
       const { title, author, isbn, publication_year } = updateBookDto;
       const result = await this.databaseService.query(
         `UPDATE books
@@ -70,13 +70,7 @@ export class BooksService {
              isbn             = COALESCE($3, isbn),
              publication_year = COALESCE($4, publication_year)
          WHERE id = $5 RETURNING *`,
-        [
-          title || existingBook.title,
-          author || existingBook.author,
-          isbn || existingBook.isbn,
-          publication_year || existingBook.publication_year,
-          id,
-        ],
+        [title, author, isbn, publication_year, id],
       );
       if (result.rows.length === 0) {
         throw new NotFoundException(`Book with ID ${id} not found`);
@@ -111,16 +105,10 @@ export class BooksService {
   async countByYear(year: number): Promise<number> {
     try {
       const result = await this.databaseService.query(
-        'CALL count_books_by_year($1, NULL)',
+        'SELECT COUNT(*) as count FROM books WHERE publication_year = $1',
         [year],
       );
-
-      // Fetch the OUT parameter result
-      const countResult = await this.databaseService.query(
-        'SELECT $1 AS count',
-        [result.rows[0]?.p_count || 0],
-      );
-      return countResult.rows[0].count;
+      return parseInt(result.rows[0].count);
     } catch (error) {
       throw new InternalServerErrorException('Failed to count books by year');
     }
