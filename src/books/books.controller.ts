@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, HttpCode, HttpStatus,
   Param,
   Post,
   Put,
@@ -22,6 +22,7 @@ export class BooksController {
    * @returns
    */
   @Get()
+  @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Book[]> {
     return await this.booksService.findAll();
   }
@@ -44,6 +45,7 @@ export class BooksController {
    * @returns
    */
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async create(@Body() createBookDto: CreateBookDto): Promise<Book> {
     return await this.booksService.create(createBookDto);
   }
@@ -56,6 +58,7 @@ export class BooksController {
    * @returns
    */
   @Put(':id')
+  @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
@@ -70,6 +73,7 @@ export class BooksController {
    * @returns
    */
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.booksService.remove(parseInt(id));
     return { message: 'Book deleted successfully' };
