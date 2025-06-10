@@ -18,7 +18,7 @@ export class BooksService {
         'SELECT * FROM books',
         [],
       );
-      return result.rows;
+      return result.rows as Book[];
     } catch (error) {
       throw new InternalServerErrorException('Failed to fetch books');
     }
@@ -30,10 +30,10 @@ export class BooksService {
         'SELECT * FROM books WHERE id = $1',
         [id],
       );
-      if (result.rows.length == 0) {
+      if (result.rows.length === 0) {
         throw new NotFoundException(`Book with ID ${id} not found`);
       }
-      return result.rows[0];
+      return result.rows[0] as Book;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       throw new InternalServerErrorException('Failed to fetch book');
@@ -48,10 +48,9 @@ export class BooksService {
         'INSERT INTO books (title, author, isbn, publication_year) VALUES ($1, $2, $3, $4) RETURNING *',
         [title, author, isbn, publication_year],
       );
-      return result.rows[0];
+      return result.rows[0] as Book;
     } catch (error) {
       if (error.code === '23505') {
-        // Unique violation (duplicate ISBN)
         throw new InternalServerErrorException('ISBN already exists');
       }
       throw new InternalServerErrorException('Failed to create book');
@@ -75,7 +74,7 @@ export class BooksService {
       if (result.rows.length === 0) {
         throw new NotFoundException(`Book with ID ${id} not found`);
       }
-      return result.rows[0];
+      return result.rows[0] as Book;
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       if (error.code === '23505') {
@@ -108,7 +107,7 @@ export class BooksService {
         'SELECT COUNT(*) as count FROM books WHERE publication_year = $1',
         [year],
       );
-      return parseInt(result.rows[0].count);
+      return parseInt(result.rows[0].count as string);
     } catch (error) {
       throw new InternalServerErrorException('Failed to count books by year');
     }

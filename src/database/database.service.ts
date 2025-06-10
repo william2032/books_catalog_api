@@ -14,7 +14,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
     });
-    // console.log('Database ', process.env.PG_DATABASE);
+    // console.log('Password ', process.env.PG_PASSWORD);
 
     // Handle pool errors
     this.pool.on('error', (err) => {
@@ -26,7 +26,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     try {
       // Test connection with a simple query
       await this.pool.query('SELECT NOW()');
-      console.log('Connected to PostgreSQL database');
+      console.log('Database connection established successfully.');
     } catch (error) {
       console.error('Failed to connect to PostgreSQL:', error);
       throw new Error('Database connection failed');
