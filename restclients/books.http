@@ -9,14 +9,14 @@ POST http://localhost:3000/books
 Content-Type: application/json
 
 {
-  "title": "Atomic Habits",
-  "author": "James Clear",
-  "isbn": "784677878774774",
-  "publication_year": 2020
+  "title": "Computer Science",
+  "author": "Alan Turing",
+  "isbn": "78432787865374",
+  "publication_year": 1930
 }
 
-###Update a book using PUT
-PUT http://localhost:3000/books/2
+###Update a book using Patch
+PATCH http://localhost:3000/books/3
 Content-Type: application/json
 
 {
@@ -27,4 +27,4 @@ Content-Type: application/json
 DELETE http://localhost:3000/books/2
 
 ### count books by year
-GET http://localhost:3000/books/count/1848
+GET http://localhost:3000/books/count/1930

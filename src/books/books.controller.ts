@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpCode, HttpStatus,
+  Get,
+  HttpCode,
+  HttpStatus,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { Book } from './interfaces/book-interface';
 import { BooksService } from './books.service';
@@ -51,13 +53,13 @@ export class BooksController {
   }
 
   /**
-   * Put
+   * Patch
    * /books/:id
    * @param id
    * @param updateBookDto
    * @returns
    */
-  @Put(':id')
+  @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
